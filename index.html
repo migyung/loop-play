@@ -103,7 +103,7 @@ dialog::backdrop{background:rgba(10,20,18,.5)}
   <header>
     <div class="eyebrow">Invites Loop · 사내 게임 공모전 2026.10</div>
     <h1>LOOP PLAY 게임 갤러리</h1>
-    <p class="lede">인바이츠루프를 설명하는 게임 20편이 올라와 있습니다. 직접 플레이해 보고, 인바이츠루프를 가장 잘 전달한 작품 3편을 골라 투표해 주세요.</p>
+    <p class="lede">인바이츠루프를 설명하는 게임 22편이 올라와 있습니다. 직접 플레이해 보고, 인바이츠루프를 가장 잘 전달한 작품 3편을 골라 투표해 주세요.</p>
     <ol class="steps">
       <li>카드에서 <b>플레이하기</b></li>
       <li>마음에 드는 작품 <b>3편 선택</b></li>
@@ -117,7 +117,7 @@ dialog::backdrop{background:rgba(10,20,18,.5)}
   </header>
 
   <div class="toolbar">
-    <span id="playedCount">플레이한 작품 0 / 20</span>
+    <span id="playedCount">플레이한 작품 0 / 22</span>
     <button type="button" id="sortBtn">번호순으로 보기</button>
   </div>
 
@@ -163,26 +163,28 @@ const PERIOD_TEXT = "2026.MM.DD ~ MM.DD";
 
 // ───────── 출품작 (번호는 Apps Script의 GAMES 목록과 같아야 합니다) ─────────
 const GAMES = [
-  ["내 이야기가 이어지는 여정","https://ksyoo-hconnect.github.io/game/games/yks.html"],
-  ["루프 러시","https://invites-loop-game.vercel.app/"],
-  ["루프 커넥트","https://invites-loop-v5-game.vercel.app/"],
-  ["LOOP SURVIVORS","https://ksyoo-hconnect.github.io/game/games/psj.html"],
-  ["나의 작은 건강 요정","https://ksyoo-hconnect.github.io/game/games/ksw.html"],
-  ["건강의 꽃을 피워라!","https://ksyoo-hconnect.github.io/game/games/lsl.html"],
-  ["나를 알아가는 작은 도약","https://invitesloop-game-doodle-acy-hc.vercel.app/"],
-  ["헬스타이쿤","https://claude.ai/artifact/NvwTi8bkmyMtdKUiZ6C5mm"],
-  ["오늘의 착장","https://claude.ai/artifact/84WNAmmBFrWKszdstUZvCf"],
-  ["건강비서 튜토리얼","https://ksyoo-hconnect.github.io/game/games/sh/assistant-tutorial.html"],
-  ["인바이츠루프 한 바퀴","https://ksyoo-hconnect.github.io/game/games/sh/one-loop.html"],
-  ["말풍선 러시","https://ksyoo-hconnect.github.io/game/games/sh/bubble-rush.html"],
-  ["DOOM · AI 건강비서 에디션","https://ksyoo-hconnect.github.io/game/games/sh/health-doom.html"],
-  ["콜리의 여정 · 건강비서 첫걸음","https://ksyoo-hconnect.github.io/game/games/sh/collie-journey.html"],
-  ["POOR → LOOP","https://ksyoo-hconnect.github.io/game/games/daejeon/%EC%A0%95%EB%8B%A4%EC%9A%B4/%EC%A0%95%EB%8B%A4%EC%9A%B4_poor-loop-opus.html"],
-  ["루프 마을","https://ksyoo-hconnect.github.io/game/games/daejeon/%EC%A1%B0%EB%AF%BC%EC%A7%80/%EC%A1%B0%EB%AF%BC%EC%A7%80_%EB%A3%A8%ED%94%84%EB%A7%88%EC%9D%84_%EB%AA%A8%EB%B0%94%EC%9D%BC%EA%B2%8C%EC%9E%84.html"],
-  ["AIM 방탈출","https://ksyoo-hconnect.github.io/game/games/daejeon/%EC%9C%A1%EC%86%8C%EC%97%B0/%EC%9C%A1%EC%86%8C%EC%97%B0_escape.html"],
-  ["리암의 거짓말","https://ksyoo-hconnect.github.io/game/games/daejeon/%EB%AF%BC%EC%B1%84%ED%98%84/%EB%AF%BC%EC%B1%84%ED%98%84_%EB%A6%AC%EC%95%94%EC%9D%98_%EA%B1%B0%EC%A7%93%EB%A7%90_%EA%B2%8C%EC%9E%84_v2.html"],
-  ["Loop with Genie","https://ksyoo-hconnect.github.io/game/games/daejeon/%EA%B9%80%EC%9D%80%EA%B2%BD/%EA%B9%80%EC%9D%80%EA%B2%BD_loop-with-genie.html"],
-  ["내일의 나를 부탁해","https://ksyoo-hconnect.github.io/game/games/daejeon/%EC%A0%95%ED%83%9D%EC%A4%80/%EC%A0%95%ED%83%9D%EC%A4%80_%EB%82%B4%EC%9D%BC%EC%9D%98%EB%82%98.html"]
+  ["내 이야기가 이어지는 여정", "https://ksyoo-hconnect.github.io/game/games/yks.html"],
+  ["루프 퀘스트", "https://ksyoo-hconnect.github.io/game/games/kgt.html"],
+  ["루프 러시", "https://invites-loop-game.vercel.app/"],
+  ["루프 커넥트", "https://invites-loop-v5-game.vercel.app/"],
+  ["LOOP SURVIVORS", "https://ksyoo-hconnect.github.io/game/games/psj.html"],
+  ["나의 작은 건강 요정", "https://ksyoo-hconnect.github.io/game/games/ksw.html"],
+  ["건강의 꽃을 피워라!", "https://ksyoo-hconnect.github.io/game/games/lsl.html"],
+  ["나를 알아가는 작은 도약", "https://invitesloop-game-doodle-acy-hc.vercel.app/"],
+  ["헬스타이쿤", "https://claude.ai/artifact/NvwTi8bkmyMtdKUiZ6C5mm"],
+  ["루프 합성", "https://claude.ai/artifact/XRyoioz43gnN1iGV4ZYsdE?sk=q9LNpoIECApl68MvkLv_vQ"],
+  ["그냥 튜토리얼", "https://claude.ai/artifact/GKFuJ1E6K1nkCy5gccrykW?sk=haJR37USGcipR1HHDOzHiw"],
+  ["건강비서 튜토리얼", "https://ksyoo-hconnect.github.io/game/games/sh/assistant-tutorial.html"],
+  ["인바이츠루프 한 바퀴", "https://ksyoo-hconnect.github.io/game/games/sh/one-loop.html"],
+  ["지니의 건강 자아 유형 테스트", "https://ksyoo-hconnect.github.io/game/games/sh/genie-personality.html"],
+  ["건강비서 퀘스트", "https://ksyoo-hconnect.github.io/game/games/sh/assistant-quest-njs.html"],
+  ["AI 건강비서 퀘스트", "https://ksyoo-hconnect.github.io/game/games/sh/assistant-quest-lkh.html"],
+  ["콜리의 여정 · 건강비서 첫걸음", "https://ksyoo-hconnect.github.io/game/games/sh/collie-journey.html"],
+  ["POOR → LOOP", "https://ksyoo-hconnect.github.io/game/games/daejeon/%EC%A0%95%EB%8B%A4%EC%9A%B4/%EC%A0%95%EB%8B%A4%EC%9A%B4_poor-loop-opus.html"],
+  ["AIM 방탈출", "https://ksyoo-hconnect.github.io/game/games/daejeon/%EC%9C%A1%EC%86%8C%EC%97%B0/%EC%9C%A1%EC%86%8C%EC%97%B0_escape.html"],
+  ["리암의 거짓말", "https://ksyoo-hconnect.github.io/game/games/daejeon/%EB%AF%BC%EC%B1%84%ED%98%84/%EB%AF%BC%EC%B1%84%ED%98%84_%EB%A6%AC%EC%95%94%EC%9D%98_%EA%B1%B0%EC%A7%93%EB%A7%90_%EA%B2%8C%EC%9E%84_v2.html"],
+  ["Beyond Time", "https://ksyoo-hconnect.github.io/game/games/daejeon/%EA%B9%80%EC%9D%80%EA%B2%BD/Beyond-Time.html"],
+  ["루틴 점프", "https://migyung.github.io/loop-play/loop-jump.html"]
 ].map(([title,url],i)=>({no:i+1,title,url,desc:""}));
 
 // ───────── 상태 ─────────
@@ -190,9 +192,9 @@ const HUES=["--h1","--h2","--h3","--h4","--h5"];
 const pad=n=>String(n).padStart(2,"0");
 const load=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}};
 const store=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
-const played=new Set(load("lp-played",[]));
+const played=new Set(load("lp-played-v2",[]));
 let picked=[];                       // 선택 순서 유지
-let voted=load("lp-voted",null);     // {name, picks, at}
+let voted=load("lp-voted-v2",null);     // {name, picks, at}
 let byNumber=false;
 const shuffled=(a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a})(GAMES);
 const $=id=>document.getElementById(id);
@@ -216,7 +218,7 @@ function render(){
           <button type="button" class="pick" aria-pressed="false">선택</button>
         </div>
       </div>`;
-    el.querySelector("a").addEventListener("click",()=>{played.add(g.no);store("lp-played",[...played]);update()});
+    el.querySelector("a").addEventListener("click",()=>{played.add(g.no);store("lp-played-v2",[...played]);update()});
     el.querySelector(".pick").addEventListener("click",()=>togglePick(g.no));
     grid.appendChild(el);
   }
@@ -286,7 +288,7 @@ $("voteForm").addEventListener("submit",async e=>{
       err.textContent=data.message||"제출하지 못했습니다. 잠시 후 다시 시도해 주세요.";err.hidden=false;
       return;
     }
-    voted={name,picks:picked.slice(),at:Date.now()};store("lp-voted",voted);
+    voted={name,picks:picked.slice(),at:Date.now()};store("lp-voted-v2",voted);
     dlg.close();toast("투표가 접수되었습니다. 참여해 주셔서 감사합니다!");update();
   }catch(ex){
     err.textContent="네트워크 문제로 제출하지 못했습니다. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.";err.hidden=false;
