@@ -32,7 +32,8 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-
 header{display:grid;gap:20px;margin-bottom:28px}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--accent);text-transform:uppercase}
 h1{font-family:var(--display);font-weight:400;font-size:clamp(34px,6vw,52px);line-height:1.05;margin:0;text-wrap:balance}
-.lede{margin:0;color:var(--muted);max-width:62ch}
+.lede{margin:0;color:var(--muted);max-width:none}
+header,dialog{word-break:keep-all;overflow-wrap:break-word}
 .steps{display:flex;flex-wrap:wrap;gap:8px 24px;margin:0;padding:14px 18px;list-style:none;
   border:1px solid var(--line);border-radius:10px;background:var(--surface);counter-reset:s}
 .steps li{counter-increment:s;display:flex;gap:8px;align-items:baseline}
@@ -94,6 +95,19 @@ dialog::backdrop{background:rgba(10,20,18,.5)}
 .dlg .note{margin:0;font-size:12px;color:var(--muted)}
 .dlg .err{margin:0;font-size:13px;color:var(--danger)}
 .dlg .row{display:flex;justify-content:flex-end;gap:8px}
+.dlg .notice{margin:0;padding:10px 12px;font-size:13px;font-weight:500;line-height:1.6;color:var(--danger);
+  background:color-mix(in srgb,var(--danger) 10%,var(--surface));border:1px solid color-mix(in srgb,var(--danger) 40%,var(--surface));border-radius:8px}
+.dlg .notice b{font-weight:700}
+.policy{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;background:var(--surface)}
+.policy summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;padding:12px 16px;font-size:15px;font-weight:700}
+.policy summary::-webkit-details-marker{display:none}
+.policy summary::before{content:"▸";color:var(--accent);transition:transform .15s}
+.policy[open] summary::before{transform:rotate(90deg)}
+.policy .hint{font-size:12px;font-weight:500;color:var(--muted)}
+.policy[open] .hint{display:none}
+.policy summary:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 50%,transparent);outline-offset:2px;border-radius:8px}
+.policy ol{margin:0;padding:0 18px 16px 40px;display:grid;gap:6px;font-size:14px;color:var(--muted);max-width:none}
+.policy b{color:var(--fg);font-weight:700}
 @media (prefers-reduced-motion:no-preference){.card{transition:border-color .2s,box-shadow .2s}}
 </style>
 </head>
@@ -103,17 +117,28 @@ dialog::backdrop{background:rgba(10,20,18,.5)}
   <header>
     <div class="eyebrow">Invites Loop · 사내 게임 공모전 2026.10</div>
     <h1>LOOP PLAY 게임 갤러리</h1>
-    <p class="lede">인바이츠루프를 설명하는 게임 22편이 올라와 있습니다. 직접 플레이해 보고, 인바이츠루프를 가장 잘 전달한 작품 3편을 골라 투표해 주세요.</p>
+    <p class="lede">인바이츠루프를 설명하는 게임 22편이 올라와 있습니다.<br>직접 플레이해 보고, 인바이츠루프 서비스를 잘 보여주며, 이해하기 쉽고 재미있는 게임 3편을 선택하여 투표해 주세요.</p>
     <ol class="steps">
       <li>카드에서 <b>플레이하기</b></li>
       <li>마음에 드는 작품 <b>3편 선택</b></li>
       <li>하단 <b>투표하기</b> → 이름 입력 후 제출</li>
     </ol>
     <div class="meta">
-      <span>평가 기준 <b>인바이츠루프 설명력 · 재미 · 완성도</b></span>
+      <span>평가 기준 <b>인바이츠루프 서비스 전달력 · 재미 · 완성도</b></span>
       <span>투표 기간 <b id="period">2026.MM.DD ~ MM.DD</b></span>
       <span>1인 1회 · 제출 후 수정할 수 없습니다</span>
     </div>
+    <details class="policy">
+      <summary>투표 안내 <span class="hint">펼쳐보기</span></summary>
+      <ol>
+        <li><b>1인 1회</b> 투표가 원칙입니다. 제출한 투표는 수정하거나 취소할 수 없습니다.</li>
+        <li><u>투표할 때 <b>본인 실명</b>을 반드시 입력해 주세요. 동명이인이라면 이름 뒤에 부서를 붙여 주세요. (예: 홍길동 기획팀)</u></li>
+        <li>투표는 <b>익명으로 집계</b>됩니다. 입력한 이름은 중복·무효 확인 등 운영 목적으로만 사용하며, 누가 어디에 투표했는지는 공개하지 않습니다.</li>
+        <li>이름을 잘못 입력하면 <b>무효</b> 처리됩니다.</li>
+        <li>두 번 이상 투표 시, <b>처음 제출한 투표만</b> 반영됩니다.</li>
+        <li>선택한 게임 3개는 선택 순서와 관계없이 <b>1표씩</b> 반영됩니다.</li>
+      </ol>
+    </details>
   </header>
 
   <div class="toolbar">
@@ -138,10 +163,10 @@ dialog::backdrop{background:rgba(10,20,18,.5)}
       <p class="note" style="margin-bottom:6px">선택한 작품</p>
       <ol id="dlgPicks"></ol>
     </div>
-    <label for="voterName">이름
+    <label for="voterName">이름 (본인 실명)
       <input id="voterName" name="voterName" autocomplete="name" maxlength="30" placeholder="예: 홍길동" required>
     </label>
-    <p class="note">같은 이름으로는 한 번만 투표할 수 있습니다. 동명이인이라면 이름 뒤에 부서를 붙여 주세요. (예: 홍길동 기획팀)</p>
+    <p class="notice">투표할 때 <b>본인 실명</b>을 반드시 입력해 주세요.<br>동명이인이라면 이름 뒤에 부서를 붙여 주세요. (예: 홍길동 기획팀)</p>
     <p class="err" id="dlgErr" hidden></p>
     <div class="row">
       <button type="button" class="btn ghost" id="cancelBtn">취소</button>
@@ -239,7 +264,7 @@ function update(){
     const no=+el.dataset.no, isPick=picked.includes(no), done=played.has(no);
     el.classList.toggle("picked",isPick);
     el.querySelector(".badges").innerHTML=
-      (done?'<span class="badge">플레이함</span>':"")+(isPick?`<span class="badge on">선택 ${picked.indexOf(no)+1}</span>`:"");
+      (done?'<span class="badge">플레이함</span>':"")+(isPick?'<span class="badge on">선택</span>':"");
     const b=el.querySelector(".pick");
     b.setAttribute("aria-pressed",isPick);
     b.textContent=isPick?"✓ 선택됨":"선택";
@@ -278,8 +303,7 @@ $("voteForm").addEventListener("submit",async e=>{
   e.preventDefault();
   const name=$("voterName").value.trim().replace(/\s+/g," ");
   const err=$("dlgErr"), sb=$("submitBtn");
-  if(name.length<2){err.textContent="이름을 2자 이상 입력해 주세요.";err.hidden=false;return}
-  sb.disabled=true;sb.textContent="제출 중…";err.hidden=true;
+  if(name.length<2){err.textContent="본인 실명을 2자 이상 입력해 주세요.";err.hidden=false;return}  sb.disabled=true;sb.textContent="제출 중…";err.hidden=true;
   try{
     // text/plain 으로 보내야 브라우저 사전 요청(CORS preflight) 없이 Apps Script에 전달됩니다
     const res=await fetch(VOTE_API,{method:"POST",body:JSON.stringify({name,picks:picked})});
