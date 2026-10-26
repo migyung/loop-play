@@ -58,9 +58,15 @@ header,dialog{word-break:keep-all;overflow-wrap:break-word}
 .meta{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted)}
 .meta b{color:var(--fg);font-weight:500}
 
-.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;font-size:13px;color:var(--muted)}
+.toolbar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px 12px;margin-bottom:14px;font-size:13px;color:var(--muted)}
 .toolbar button{font:inherit;color:var(--accent);background:none;border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer}
 .toolbar button:hover{border-color:var(--accent)}
+.tools{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px;min-width:0}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.toolbar .fbtn[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.fbtn .cnt{opacity:.7;margin-left:3px;font-variant-numeric:tabular-nums}
+#sortBtn{border-style:dashed}
+@media (max-width:640px){.toolbar{flex-direction:column;align-items:stretch}.tools{justify-content:flex-start}}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
 .card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;min-width:0}
@@ -77,6 +83,8 @@ header,dialog{word-break:keep-all;overflow-wrap:break-word}
 .body{display:flex;flex-direction:column;gap:6px;padding:14px 16px 16px;flex:1}
 .face{position:relative;display:grid;gap:6px;justify-items:center;text-align:center;min-width:0;width:100%}
 .title{font-family:var(--display);font-weight:400;font-size:26px;line-height:1.25;margin:0;color:var(--fg);text-wrap:balance;overflow-wrap:anywhere;word-break:keep-all}
+.tag{position:relative;margin-top:4px;font-size:13px;font-weight:500;line-height:1;padding:5px 10px;border-radius:999px;
+  color:var(--hue);background:var(--surface);border:1px solid color-mix(in srgb,var(--hue) 45%,var(--surface))}
 .desc{margin:0;font-size:13px;color:var(--muted)}
 .desc.pending{font-style:italic;opacity:.75}
 .actions{margin-top:auto;padding-top:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -144,13 +152,12 @@ dialog::backdrop{background:rgba(10,20,18,.5)}
 <div class="wrap">
   <div class="topbar" id="topbar">
       <h1>인바이츠루프 <span class="nw">사내 게임 공모전</span></h1>
-      <p class="sub">새로워질 앱 사용법, 쉽고 재미있게 알려준 게임에 투표해주세요.</p>
+      <p class="sub">새로운 앱 사용법을 가장 쉽고 재미있게 알려준 게임 3개에 투표해 주세요.</p>
   </div>
 
   <header>
     <section class="intro" aria-label="공모전 소개">
-      <p class="lede">인바이츠루프 앱이 <b>새롭게 개편</b>될 예정입니다.<br>처음 쓰는 분도 서비스를 쉽고 재미있게 이해할 수 있도록, <b>개발본부 임직원들이 직접 게임으로</b> 만들었습니다.<br>출품된 게임 중 일부는 <b>실제 앱 서비스에 반영</b>될 예정입니다.</p>
-      <p class="cta">👉 플레이해 보시고, 새로운 앱 사용법을 가장 쉽고 재미있게 알려준 게임 3개에 투표해 주세요!</p>
+      <p class="lede">인바이츠루프 앱이 <b>새롭게 개편</b>될 예정입니다.<br>처음 쓰는 분도 서비스를 쉽고 재미있게 이해할 수 있도록, <b>개발본부 임직원들이 직접 게임으로</b> 만들었습니다.<br>여러분의 투표로 선정된 게임은 <b>실제 앱 서비스에 반영</b>될 수 있습니다.</p>
       <ol class="steps">
         <li>카드에서 <b>플레이하기</b></li>
         <li>마음에 드는 작품 <b>3편 선택</b></li>
@@ -178,7 +185,10 @@ dialog::backdrop{background:rgba(10,20,18,.5)}
 
   <div class="toolbar">
     <span id="playedCount">플레이한 작품 0 / 22</span>
-    <button type="button" id="sortBtn">번호순으로 보기</button>
+    <div class="tools">
+      <div class="filters" id="filters" role="group" aria-label="카테고리 필터"></div>
+      <button type="button" id="sortBtn">번호순으로 보기</button>
+    </div>
   </div>
 
   <main class="grid" id="grid" aria-label="출품작 목록"></main>
@@ -226,6 +236,15 @@ const PICK_COUNT = 3;
 // 3) 화면에 표시할 투표 기간
 const PERIOD_TEXT = "2026.MM.DD ~ MM.DD";
 
+// ───────── 카테고리 (작품 번호 → 카테고리) ─────────
+const CATS={tut:"튜토리얼·실습",quiz:"퀴즈·미션",story:"스토리·RPG",arcade:"아케이드·액션",puzzle:"퍼즐·테스트"};
+const CATEGORY={
+  1:CATS.quiz, 2:CATS.arcade, 3:CATS.arcade, 4:CATS.quiz, 5:CATS.arcade, 6:CATS.tut,
+  7:CATS.tut, 8:CATS.arcade, 9:CATS.puzzle, 10:CATS.puzzle, 11:CATS.tut, 12:CATS.tut,
+  13:CATS.quiz, 14:CATS.puzzle, 15:CATS.story, 16:CATS.tut, 17:CATS.tut, 18:CATS.story,
+  19:CATS.puzzle, 20:CATS.story, 21:CATS.story, 22:CATS.arcade
+};
+
 // ───────── 출품작 (번호는 Apps Script의 GAMES 목록과 같아야 합니다) ─────────
 const GAMES = [
   ["내 이야기가 이어지는 여정", "https://ksyoo-hconnect.github.io/game/games/yks.html"],
@@ -250,7 +269,7 @@ const GAMES = [
   ["리암의 거짓말", "https://ksyoo-hconnect.github.io/game/games/daejeon/%EB%AF%BC%EC%B1%84%ED%98%84/%EB%AF%BC%EC%B1%84%ED%98%84_%EB%A6%AC%EC%95%94%EC%9D%98_%EA%B1%B0%EC%A7%93%EB%A7%90_%EA%B2%8C%EC%9E%84_v2.html"],
   ["Beyond Time", "https://ksyoo-hconnect.github.io/game/games/daejeon/%EA%B9%80%EC%9D%80%EA%B2%BD/Beyond-Time.html"],
   ["루틴 점프", "https://migyung.github.io/loop-play/loop-jump.html"]
-].map(([title,url],i)=>({no:i+1,title,url,desc:""}));
+].map(([title,url],i)=>({no:i+1,title,url,desc:"",cat:CATEGORY[i+1]||""}));
 
 // ───────── 상태 ─────────
 const HUES=["--h1","--h2","--h3","--h4","--h5"];
@@ -261,6 +280,7 @@ const played=new Set(load("lp-played-v2",[]));
 let picked=[];                       // 선택 순서 유지
 let voted=load("lp-voted-v2",null);     // {name, picks, at}
 let byNumber=false;
+let filter="";   // 빈 값 = 전체
 const shuffled=(a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a})(GAMES);
 const $=id=>document.getElementById(id);
 $("period").textContent=PERIOD_TEXT;
@@ -270,12 +290,12 @@ function toast(msg){const t=$("toast");t.textContent=msg;t.hidden=false;clearTim
 // ───────── 카드 ─────────
 function render(){
   const grid=$("grid");grid.innerHTML="";
-  for(const g of (byNumber?GAMES:shuffled)){
+  for(const g of (byNumber?GAMES:shuffled).filter(x=>!filter||x.cat===filter)){
     const el=document.createElement("article");
     el.className="card";el.dataset.no=g.no;
     el.style.setProperty("--hue",`var(${HUES[(g.no-1)%HUES.length]})`);
     el.innerHTML=`
-      <div class="thumb"><div class="face"><span class="num">#${pad(g.no)}</span><h2 class="title">${g.title}</h2></div><span class="badges"></span></div>
+      <div class="thumb"><div class="face"><span class="num">#${pad(g.no)}</span><h2 class="title">${g.title}</h2>${g.cat?`<span class="tag">${g.cat}</span>`:""}</div><span class="badges"></span></div>
       <div class="body">
         <div class="actions">
           <a href="${g.url}" target="_blank" rel="noopener">플레이하기 ↗</a>
@@ -322,6 +342,15 @@ function update(){
   vb.disabled=picked.length!==PICK_COUNT;
   vb.textContent="투표하기";
 }
+
+// ───────── 카테고리 필터 ─────────
+function renderFilters(){
+  const box=$("filters");
+  const items=[["","전체",GAMES.length],...Object.values(CATS).map(c=>[c,c,GAMES.filter(g=>g.cat===c).length])];
+  box.innerHTML=items.map(([v,l,n])=>`<button type="button" class="fbtn" data-v="${v}" aria-pressed="${v===filter}">${l}<span class="cnt">${n}</span></button>`).join("");
+  box.querySelectorAll(".fbtn").forEach(b=>b.addEventListener("click",()=>{filter=b.dataset.v;renderFilters();render();}));
+}
+renderFilters();
 
 $("sortBtn").addEventListener("click",e=>{
   byNumber=!byNumber;
