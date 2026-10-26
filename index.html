@@ -55,6 +55,7 @@ header,dialog{word-break:keep-all;overflow-wrap:break-word}
 .steps li{counter-increment:s;display:flex;gap:8px;align-items:baseline}
 .steps li::before{content:counter(s);font-family:var(--mono);font-size:13px;color:var(--accent-ink);background:var(--accent);
   width:20px;height:20px;border-radius:50%;display:inline-grid;place-items:center;flex:none;transform:translateY(-1px)}
+.note-apply{margin:-10px 0 0;font-size:13px;color:var(--muted)}
 .meta{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted)}
 .meta b{color:var(--fg);font-weight:500}
 
@@ -143,6 +144,7 @@ dialog::backdrop{background:rgba(10,20,18,.5)}
 .policy[open] .hint{display:none}
 .policy summary:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 50%,transparent);outline-offset:2px;border-radius:8px}
 .policy ol{margin:0;padding:8px 0 4px 22px;display:grid;gap:6px;font-size:14px;color:var(--muted);max-width:none}
+.policy-note{margin:0;padding:6px 0;font-size:13px;color:var(--muted)}
 .policy b{color:var(--fg);font-weight:700}
 @media (prefers-reduced-motion:no-preference){.card{transition:border-color .2s,box-shadow .2s}}
 </style>
@@ -157,7 +159,7 @@ dialog::backdrop{background:rgba(10,20,18,.5)}
 
   <header>
     <section class="intro" aria-label="공모전 소개">
-      <p class="lede">인바이츠루프 앱이 <b>새롭게 개편</b>될 예정입니다.<br>처음 쓰는 분도 서비스를 쉽고 재미있게 이해할 수 있도록, <b>개발본부 임직원들이 직접 게임으로</b> 만들었습니다.<br>여러분의 투표로 선정된 게임은 <b>실제 앱 서비스에 반영</b>될 수 있습니다.</p>
+      <p class="lede">인바이츠루프 앱이 <b>새롭게 개편</b>될 예정입니다.<br>처음 쓰는 분도 서비스를 쉽고 재미있게 이해할 수 있도록, <b>개발본부 임직원들이 직접 게임으로</b> 만들었습니다.<br>새로운 <b>앱 사용법을 가장 쉽고 재미있게 알려준 게임 3개</b>에 투표해 주세요.</p>
       <ol class="steps">
         <li>카드에서 <b>플레이하기</b></li>
         <li>마음에 드는 작품 <b>3편 선택</b></li>
@@ -174,12 +176,14 @@ dialog::backdrop{background:rgba(10,20,18,.5)}
           <li>투표는 <b>익명으로 집계</b>됩니다. 입력한 이름은 중복·무효 확인 등 운영 목적으로만 사용하며, 누가 어디에 투표했는지는 공개하지 않습니다.</li>
           <li>투표 기간 동안 <b>투표 현황은 공개되지 않습니다</b>.</li>
         </ol>
+        <p class="policy-note">※ 공정한 투표를 위해 게임 순서는 접속할 때마다 무작위로 바뀌며, 팀과 제작자는 공개하지 않습니다.</p>
       </details>
       <div class="meta">
         <span>평가 기준 <b>인바이츠루프 서비스 전달력(쉬운 이해와 재미)</b></span>
         <span>투표 기간 <b id="period">2026.MM.DD ~ MM.DD</b></span>
         <span>1인 1회 · 제출 후 수정할 수 없습니다</span>
       </div>
+      <p class="note-apply">※ 출품작 중 일부는 실제 앱 서비스에 반영될 수 있습니다.</p>
     </section>
   </header>
 
