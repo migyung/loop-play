@@ -180,7 +180,6 @@ dialog::backdrop{background:rgba(10,20,18,.5)}
       </details>
       <div class="meta">
         <span>평가 기준 <b>인바이츠루프 서비스 전달력(쉬운 이해와 재미)</b></span>
-        <span>투표 기간 <b id="period">2026.MM.DD ~ MM.DD</b></span>
         <span>1인 1회 · 제출 후 수정할 수 없습니다</span>
       </div>
       <p class="note-apply">※ 출품작 중 일부는 실제 앱 서비스에 반영될 수 있습니다.</p>
@@ -236,8 +235,6 @@ dialog::backdrop{background:rgba(10,20,18,.5)}
 const VOTE_API = "https://script.google.com/macros/s/AKfycby_lDV4rOaRP2PotE7c2XERpg3ePajnNBouazujMLTY5uN-pqrQIC4KJ_opxttKT0flng/exec";
 // 2) 고를 작품 수
 const PICK_COUNT = 3;
-// 3) 화면에 표시할 투표 기간
-const PERIOD_TEXT = "2026.MM.DD ~ MM.DD";
 
 // ───────── 카테고리 (작품 번호 → 카테고리) ─────────
 const CATS={tut:"튜토리얼·실습",quiz:"퀴즈·미션",story:"스토리·RPG",arcade:"아케이드·액션",puzzle:"퍼즐·테스트"};
@@ -286,7 +283,6 @@ let byNumber=false;
 let filter="";   // 빈 값 = 전체
 const shuffled=(a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a})(GAMES);
 const $=id=>document.getElementById(id);
-$("period").textContent=PERIOD_TEXT;
 
 function toast(msg){const t=$("toast");t.textContent=msg;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,2400)}
 
